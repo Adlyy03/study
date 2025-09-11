@@ -27,4 +27,11 @@ class ProfileUpdateRequest extends FormRequest
             ],
         ];
     }
+
+    public function show()
+        {
+            $user = auth()->user();
+            return view('profile.show', compact('user'));
+        }
+
 }

@@ -76,13 +76,12 @@
               class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20"
             >
               <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-gray-700 hover:bg-purple-100">Profile</a>
-              <!-- Logout -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-purple-100">
-                        Log Out
-                    </button>
-                </form>
+              <form method="POST" action="{{ route('logout') }}">
+                  @csrf
+                  <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-purple-100">
+                      Log Out
+                  </button>
+              </form>
             </div>
           </div>
         </div>
@@ -104,7 +103,7 @@
             type="text" 
             placeholder="Search..." 
             class="mt-3 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-          >
+          >  
 
           <!-- Mobile profile info -->
           <div class="pt-4 border-t border-gray-200">
@@ -114,25 +113,17 @@
 
           <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-purple-100">Profile</a>
           <form method="POST" action="/logout" class="px-3">
-            <!-- CSRF token -->
-            <button 
-              type="submit" 
-              class="w-full text-left px-3 py-2 rounded-md text-gray-700 hover:bg-purple-100"
-            >
-              Log Out
-            </button>
+            <button type="submit" class="w-full text-left px-3 py-2 rounded-md text-gray-700 hover:bg-purple-100">Log Out</button>
           </form>
         </nav>
       </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="p-6 space-y-6 flex-1 bg-gray-50 overflow-auto">
-      <h2 class="text-2xl font-semibold text-gray-700">Welcome to the Dashboard!</h2>
-      <p>Your content goes here...</p>
+    <main class="p-6 space-y-6 flex-1 bg-gray-50">
+      @include('components.users-table', ['users' => \App\Models\User::all()])
     </main>
   </div>
 </div>
 
-<!-- Jangan lupa load Alpine.js di bawah -->
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
