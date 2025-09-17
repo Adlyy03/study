@@ -1,33 +1,31 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use App\Http\Controllers\UserController;
 
-// Redirect root ke dashboard
-Route::get('/', function () {
-    return redirect()->route('dashboard');
+// ✅ Group untuk user management (CRUD)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard'); // Read
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create'); // Create form
+    Route::post('/users', [UserController::class, 'store'])->name('users.store'); // Store
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit'); // Edit form
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update'); // Update
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy'); // Delete
 });
 
-// Semua route yang butuh autentikasi
-Route::middleware(['auth'])->group(function () {
+// ✅ Halaman awal
+Route::get('/', function () {
+    return view('welcome');
+});
 
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // Profile
+// ✅ Profile routes
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
-    // CRUD User
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Breeze auth routes (login, register, logout, password reset)
+// ✅ Auth routes
 require __DIR__.'/auth.php';

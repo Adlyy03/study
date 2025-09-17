@@ -2,68 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    // Tampilkan halaman dashboard dengan tabel users
+    // READ
     public function index()
     {
-        $users = User::all(); // Ambil semua user dari DB
+        $users = User::all();
         return view('dashboard', compact('users'));
     }
 
-    // Tampilkan form create user
+    // CREATE form
     public function create()
     {
-        return view('dashboard.users.create');
+        return view('users.create');
     }
 
-    // Simpan user baru
+    // STORE
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'role' => 'required|string|max:50',
-            'password' => 'required|string|min:6|confirmed'
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6'
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
-            'password' => bcrypt($request->password)
+            'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'User created successfully.');
+        return redirect()->route('dashboard')->with('success', 'User created successfully');
     }
 
-    // Tampilkan form edit user
+    // EDIT form
     public function edit(User $user)
     {
-        return view('dashboard.users.edit', compact('user'));
+        return view('users.edit', compact('user'));
     }
 
-    // Update user
+    // UPDATE
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => "required|email|unique:users,email,{$user->id}",
-            'role' => 'required|string|max:50'
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
-        $user->update($request->only('name','email','role'));
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
 
-        return redirect()->route('dashboard')->with('success', 'User updated successfully.');
+        return redirect()->route('dashboard')->with('success', 'User updated successfully');
     }
 
-    // Hapus user
+    // DELETE
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('dashboard')->with('success', 'User deleted successfully.');
+        return redirect()->route('dashboard')->with('success', 'User deleted successfully');
     }
 }
