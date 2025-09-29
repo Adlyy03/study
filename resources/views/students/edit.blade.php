@@ -4,7 +4,7 @@
 <div class="container mx-auto p-6">
     <h1 class="text-2xl font-bold mb-4">Edit Siswa</h1>
 
-    <form action="{{ route('students.update', $student->id) }}" method="POST" class="space-y-4">
+    <form action="{{ route('students.update', $student->id) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
         @method('PUT')
 
@@ -60,6 +60,36 @@
                 <option value="0" {{ !$student->is_active ? 'selected' : '' }}>Non Aktif</option>
             </select>
         </div>
+
+        <div class="mb-3">
+            <label for="foto" class="form-label">Foto Siswa</label>
+
+            {{-- Tampilkan foto lama kalau ada --}}
+            @if(!empty($student->foto))
+                <div class="mb-2">
+                    <img src="{{ asset($student->foto) }}" 
+                        alt="Foto {{ $student->nama_lengkap }}" 
+                        class="img-thumbnail rounded" 
+                        width="120" height="120"
+                        style="object-fit: cover;">
+                </div>
+            @endif
+
+            {{-- Input upload foto baru --}}
+            <input 
+                type="file" 
+                name="foto" 
+                id="foto" 
+                accept="image/*"
+                class="form-control @error('foto') is-invalid @enderror">
+
+            @error('foto')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+
+
 
         <button type="submit"
                 class="bg-blue-600 text-white px-4 py-2 rounded">Update</button>

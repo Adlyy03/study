@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('jurusan')->nullable(); // bisa diganti foreignId kalau ada tabel jurusan
             $table->unsignedBigInteger('added_by')->nullable(); // id user yang nambahin
             $table->boolean('is_active')->default(true);
+            $table->string('foto')->nullable();
             $table->timestamps();
 
             // contoh kalau mau relasi ke tabel users

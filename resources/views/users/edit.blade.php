@@ -1,30 +1,32 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Edit User') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-md mx-auto bg-white dark:bg-gray-800 p-6 rounded shadow">
-            <form action="{{ route('users.update', $user->id) }}" method="POST">
-                @csrf
-                @method('PUT')
+@section('content')
+<div class="container">
+    <h2 class="mb-4">Edit User</h2>
 
-                <div class="mb-4">
-                    <label class="block mb-1">Name</label>
-                    <input type="text" name="name" value="{{ $user->name }}" class="w-full border p-2 rounded" required>
-                </div>
+    <form action="{{ route('users.update', $user->id) }}" method="POST">
+        @csrf
+        @method('PUT')
 
-                <div class="mb-4">
-                    <label class="block mb-1">Email</label>
-                    <input type="email" name="email" value="{{ $user->email }}" class="w-full border p-2 rounded" required>
-                </div>
-
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
-                    Update
-                </button>
-            </form>
+        <div class="mb-3">
+            <label for="name" class="form-label">Nama</label>
+            <input type="text" name="name" id="name" class="form-control" 
+                   value="{{ old('name', $user->name) }}" required>
         </div>
-    </div>
-</x-app-layout>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="email" id="email" class="form-control" 
+                   value="{{ old('email', $user->email) }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password (kosongkan jika tidak diganti)</label>
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-success">Update</button>
+        <a href="{{ route('users.index') }}" class="btn btn-secondary">Batal</a>
+    </form>
+</div>
+@endsection

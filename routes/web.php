@@ -4,11 +4,22 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
+use App\Models\Student;
 
 // Halaman awal
 Route::get('/', function () {
+    $students = Student::latest()->take(6)->get(); // ambil 6 siswa terbaru
     return view('welcome');
 });
+
+Route::get('/login', function () {
+    return view('auth.login'); // pastikan ke file login.blade.php
+})->name('login');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
 
 // Route students (CRUD)
 Route::middleware(['auth', 'verified'])->group(function () {

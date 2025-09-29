@@ -7,29 +7,20 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $students = Student::latest()->paginate(10);
         return view('students.index', compact('students'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('students.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nisn'           => 'required|unique:students,nisn|max:20',
             'nama_lengkap'   => 'required|string|max:255',
             'tempat_lahir'   => 'nullable|string|max:100',
@@ -39,44 +30,46 @@ class StudentController extends Controller
             'email'          => 'nullable|email|unique:students,email',
             'kelas'          => 'nullable|string|max:50',
             'jurusan'        => 'nullable|string|max:100',
+            'foto'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'is_active'      => 'boolean',
         ]);
 
-        $data = $request->all();
-        $data['added_by'] = auth()->id();
+        $validated['added_by'] = auth()->id();
 
-        Student::create($data);
+        // Upload foto kalau ada
+        // Upload foto kalau ada
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/students'), $fileName);
+
+            $validated['foto'] = 'uploads/students/' . $fileName;
+        }
+
+
+        Student::create($validated);
 
         return redirect()->route('students.index')
-                         ->with('success', 'Data siswa berhasil ditambahkan.');
+                         ->with('success', 'Siswa berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $student = Student::findOrFail($id);
         return view('students.show', compact('student'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $student = Student::findOrFail($id);
         return view('students.edit', compact('student'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $student = Student::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'nisn'           => 'required|max:20|unique:students,nisn,' . $student->id,
             'nama_lengkap'   => 'required|string|max:255',
             'tempat_lahir'   => 'nullable|string|max:100',
@@ -86,21 +79,44 @@ class StudentController extends Controller
             'email'          => 'nullable|email|unique:students,email,' . $student->id,
             'kelas'          => 'nullable|string|max:50',
             'jurusan'        => 'nullable|string|max:100',
+            'foto'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'is_active'      => 'boolean',
         ]);
 
-        $student->update($request->all());
+        $validated['added_by'] = auth()->id();
+
+        // kalau ada foto baru
+        // kalau ada foto baru
+        if ($request->hasFile('foto')) {
+            // hapus foto lama kalau ada
+            if ($student->foto && file_exists(public_path($student->foto))) {
+                unlink(public_path($student->foto));
+            }
+
+            // simpan foto baru
+            $file = $request->file('foto');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/students'), $fileName);
+
+            $validated['foto'] = 'uploads/students/' . $fileName;
+        }
+
+
+        $student->update($validated);
 
         return redirect()->route('students.index')
                          ->with('success', 'Data siswa berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $student = Student::findOrFail($id);
+
+        // Hapus foto kalau ada
+        if ($student->foto && file_exists(public_path($student->foto))) {
+            unlink(public_path($student->foto));
+        }
+
         $student->delete();
 
         return redirect()->route('students.index')

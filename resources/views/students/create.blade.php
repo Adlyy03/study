@@ -20,7 +20,7 @@
     <div class="container mx-auto p-6">
     <h1 class="text-2xl font-bold mb-4">Tambah Siswa</h1>
 
-    <form action="{{ route('students.store') }}" method="POST" class="space-y-4">
+    <form action="{{ route('students.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
 
         <div>
@@ -75,6 +75,12 @@
                 <option value="0">Non Aktif</option>
             </select>
         </div>
+
+        <div class="mb-3">
+            <label for="foto" class="form-label">Foto Siswa</label>
+            <input type="file" class="form-control" name="foto" id="foto" accept="image/*">
+        </div>
+
 
         <button type="submit"
                 class="bg-blue-600 text-white px-4 py-2 rounded">Simpan</button>

@@ -1,87 +1,109 @@
-<x-guest-layout>
-    <div class="h-screen md:flex">
-        <!-- Left side -->
-        <div class="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 justify-around items-center hidden">
-            <div>
-                <h1 class="text-white font-bold text-4xl font-sans">GoFinance</h1>
-                <p class="text-white mt-1">The most popular peer to peer lending at SEA</p>
-                <button type="button" class="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">Read More</button>
-            </div>
-            <!-- Decorative circles -->
-            <div class="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-            <div class="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-            <div class="absolute -top-40 -right-0 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-            <div class="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-        </div>
+<!-- resources/views/auth/register.blade.php -->
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>{{ config('app.name', 'Laravel') }}</title>
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide-icons@latest/dist/umd/lucide.min.js"></script>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- DataTables JS -->
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
-        <!-- Right side -->
-        <div class="flex md:w-1/2 justify-center py-10 items-center bg-white">
-            <form method="POST" action="{{ route('register') }}" class="bg-white w-full max-w-md px-6">
+
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
+    </head>
+    <body>
+      <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-lg">
+            <div class="text-center">
+                <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Create your account</h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Use your email to create a new account
+                </p>
+            </div>
+
+            <!-- Google Sign In -->
+            <a class="flex items-center justify-center w-full py-3 mb-4 text-sm font-medium transition duration-300 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200">
+                <img class="h-5 mr-2" src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png" alt="Google logo">
+                Sign up with Google
+            </a>
+
+            <div class="flex items-center mb-4">
+                <hr class="h-px bg-gray-300 flex-1">
+                <span class="px-3 text-gray-500 text-sm">or</span>
+                <hr class="h-px bg-gray-300 flex-1">
+            </div>
+
+            <!-- Form -->
+            <form class="mt-8 space-y-6" method="POST" action="{{ route('register') }}">
                 @csrf
 
-                <h1 class="text-gray-800 font-bold text-2xl mb-1">Create Account</h1>
-                <p class="text-sm font-normal text-gray-600 mb-7">Register to get started</p>
-
                 <!-- Name -->
-                <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                    </svg>
-                    <x-text-input id="name" name="name" type="text" :value="old('name')" required autofocus autocomplete="name"
-                        placeholder="Full name"
-                        class="pl-2 outline-none border-none w-full bg-transparent"/>
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <x-text-input id="name" name="name" type="text" :value="old('name')" required autofocus
+                        placeholder="John Doe"
+                        class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
-                <x-input-error :messages="$errors->get('name')" class="mt-2 mb-2" />
 
                 <!-- Email -->
-                <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                    </svg>
-                    <x-text-input id="email" name="email" type="email" :value="old('email')" required autocomplete="username"
-                        placeholder="Email Address"
-                        class="pl-2 outline-none border-none w-full bg-transparent"/>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <x-text-input id="email" name="email" type="email" :value="old('email')" required
+                        placeholder="mail@example.com"
+                        class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
-                <x-input-error :messages="$errors->get('email')" class="mt-2 mb-2" />
 
                 <!-- Password -->
-                <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <x-text-input id="password" name="password" type="password" required autocomplete="new-password"
-                        placeholder="Password"
-                        class="pl-2 outline-none border-none w-full bg-transparent"/>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <x-text-input id="password" name="password" type="password" required
+                        placeholder="Enter a password"
+                        class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
-                <x-input-error :messages="$errors->get('password')" class="mt-2 mb-2" />
 
                 <!-- Confirm Password -->
-                <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                              clip-rule="evenodd"/>
-                    </svg>
-                    <x-text-input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password"
-                        placeholder="Confirm Password"
-                        class="pl-2 outline-none border-none w-full bg-transparent"/>
+                <div>
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                    <x-text-input id="password_confirmation" name="password_confirmation" type="password" required
+                        placeholder="Re-enter password"
+                        class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
-                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 mb-2" />
 
-                <!-- Submit Button -->
-                <button type="submit"
-                        class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">
-                    Register
-                </button>
-
-                <div class="text-sm text-center mt-2">
-                    Already registered?
-                    <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login</a>
+                <!-- Submit -->
+                <div>
+                    <x-primary-button class="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium text-lg">
+                        Register
+                    </x-primary-button>
                 </div>
+
+                <p class="mt-4 text-center text-sm text-gray-600">
+                    Already have an account?
+                    <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:underline">Login</a>
+                </p>
             </form>
         </div>
     </div>
-</x-guest-layout>
+</body>
+</html>
