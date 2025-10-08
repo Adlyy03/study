@@ -43,20 +43,6 @@
                         </h1>
                         <p class="text-gray-600 dark:text-gray-400 text-sm transition-colors duration-300">Welcome back, {{ Auth::user()->name ?? 'Admin' }}</p>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <!-- Dark Mode Toggle -->
-                        <button id="darkModeToggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300">
-                            <i class="fas fa-moon dark:hidden"></i>
-                            <i class="fas fa-sun hidden dark:block"></i>
-                        </button>
-                        
-                        <button class="p-2 rounded-lg bg-gradient-to-r from-[#977DFF] to-[#000C9E] text-white hover:shadow-lg transition-all duration-300">
-                            <i class="fas fa-bell"></i>
-                        </button>
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-[#977DFF] to-[#000C9E] flex items-center justify-center text-white font-semibold">
-                            {{ substr(Auth::user()->name ?? 'A', 0, 1) }}
-                        </div>
-                    </div>
                 </div>
             </nav>
 

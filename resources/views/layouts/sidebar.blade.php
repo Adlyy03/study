@@ -38,22 +38,22 @@
           Permissions
         </a>
       </li>
-      <li class="py-2 text-xs uppercase tracking-wider text-white/60 font-bold mt-6 mb-2">ACADEMIC MANAGEMENT</li>
+      <li class="py-2 text-xs uppercase tracking-wider text-white/60 font-bold mt-6 mb-2">GURU</li>
       <li class="cursor-pointer">
-        <a class="py-3 px-4 flex items-center rounded-lg text-white/90 hover:bg-white/20 hover:text-white transition-all duration-300" href="/">
+        <a class="py-3 px-4 flex items-center rounded-lg text-white/90 hover:bg-white/20 hover:text-white transition-all duration-300" href="{{ route('teachers.index') }}">
           <i class="fas fa-layer-group w-5 mr-3"></i>
-          Categories
+          Guru
         </a>
       </li>
       <li class="cursor-pointer">
         <a class="py-3 px-4 flex items-center rounded-lg text-white/90 hover:bg-white/20 hover:text-white transition-all duration-300" href="/">
           <i class="fas fa-book w-5 mr-3"></i>
-          Courses
+          Satpam
         </a>
       </li>
-      <li class="py-2 text-xs uppercase tracking-wider text-white/60 font-bold mt-6 mb-2">FINANCE</li>
+      <li class="py-2 text-xs uppercase tracking-wider text-white/60 font-bold mt-6 mb-2">INVENTARIES</li>
       <li class="cursor-pointer">
-        <a href="#" class="py-3 px-4 flex items-center rounded-lg text-white/90 hover:bg-white/20 hover:text-white transition-all duration-300">
+        <a href="{{ route('inventories.index') }}" class="py-3 px-4 flex items-center rounded-lg text-white/90 hover:bg-white/20 hover:text-white transition-all duration-300">
           <i class="fas fa-shopping-cart w-5 mr-3"></i>
           Orders
         </a>

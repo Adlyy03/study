@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
 use App\Models\Student;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\InventoryController;
 
 // Halaman awal
 Route::get('/', function () {
@@ -47,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('teachers', TeacherController::class);
+Route::resource('inventories', InventoryController::class);
 
 // Auth routes
 require __DIR__.'/auth.php';
